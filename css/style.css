@@ -19,7 +19,7 @@ h1, h2, h3, h4, h5 {
   font-family: "Josefin Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; }
 
 .wrap {
-  max-width: 1250px;
+  /* max-width: 1250px; */
   margin: 0 auto;
   background: #fff;
   -webkit-box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.1);
