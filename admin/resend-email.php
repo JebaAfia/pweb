@@ -1,13 +1,11 @@
 <?php
-include_once '../classes/AdminLogin.php';
-$admin_login = new AdminLogin();
+include_once '../classes/Resendemail.php';
+$resend_email = new Resendemail();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = $_POST['email'];
-        $password = md5($_POST['password']);
-
-        $checkLogin = $admin_login->LoginUser($email, $password);
-
+        
+        $resend = $resend_email->resendEmail($email);
     }
 
 ?>
@@ -22,7 +20,7 @@ $admin_login = new AdminLogin();
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
-    <title>Login Form</title>
+    <title>Resend Email</title>
 </head>
 
 <body>
@@ -32,24 +30,10 @@ $admin_login = new AdminLogin();
             <div class="col-md-6">
                 <span>
                     <?php
-                    if (isset($_SESSION['status'])) {
+                    if (isset($resend)) {
                     ?>
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <?= $_SESSION['status']?>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    <?php
-                    }
-                    ?>
-                </span>
-                <span>
-                    <?php
-                    if (isset($checkLogin)) {
-                    ?>
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <?= $checkLogin?>
+                            <?= $resend?>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -59,7 +43,7 @@ $admin_login = new AdminLogin();
                     ?>
                 </span>
                 <div class="card">
-                    <div class="card-header">Login Form</div>
+                    <div class="card-header">Resend Email Form</div>
                     <div class="card-body">
                         <form action="" method="POST">
                             <div class="form-group">
@@ -67,18 +51,9 @@ $admin_login = new AdminLogin();
                                 <input type="email" name="email" class="form-control">
                             </div>
 
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input type="password" name="password" class="form-control">
-                            </div>
-
-                            <button type="submit" class="btn btn-success">Login</button>
-                            <a href="register.php" class="btn btn-primary">Sign Up</a>
-                            <a href="#" class="float-right">Forget Your Password?</a>
+                            <button type="submit" class="btn btn-success">Resend Email</button>
+                            <a href="login.php" class="btn btn-warning">Login</a>
                         </form>
-                        <hr>
-                        <h5>Did not recieve your varification email? <a href="resend-email.php">Resend</a></h5>
-
                     </div>
                 </div>
             </div>

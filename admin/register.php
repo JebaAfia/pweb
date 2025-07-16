@@ -64,6 +64,7 @@
                             </div>
                             
                             <button type="submit" class="btn btn-success">Sign Up</button>
+                            <a href="login.php" class="btn btn-info" >Login</a>
                         </form>
                             
                         

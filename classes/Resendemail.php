@@ -1,5 +1,4 @@
 <?php
-    
     include_once '../lib/Database.php';
     include_once '../helpers/Format.php';
 
@@ -11,19 +10,19 @@
     use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
 
-    class Register{
-        public $db;
-        public $format;
+    class Resendemail{
+        private $db;
+        private $format;
 
         public function __construct()
         {
             $this->db = new Database();
             $this->format = new Format();
+
         }
 
-        public function AddUser($data){
-
-            function sendemail_verify($name, $email, $v_token){
+        public function resendEmail($email){
+            function resend_email_varify($name, $email, $v_token){
                 $mail = new PHPMailer(true);
                 $mail->isSMTP();
                 $mail->SMTPAuth   = false;
@@ -50,42 +49,40 @@
                 $mail->Body = $email_template;
                 $mail->send();
                 // echo "Email has been sent";
-
             }
 
-            $name = $this->format->validation($data['name']);
-            $phone = $this->format->validation($data['phone']);
-            $email = $this->format->validation($data['email']);
-            $password = $this->format->validation(md5($data['password']));
-            $v_token = md5(rand());
+            $email = $this->format->validation($email);
+            $email = mysqli_real_escape_string($this->db->link, $email);
 
-            if (empty($name) || empty($phone) || empty($email) || empty($password)) {
-                $error = "Fild Must Not Be Empty";
+            if (empty($email)) {
+                $error = "Email fild must not be empty!";
                 return $error;
             }else {
-                $e_query = "SELECT * FROM tbl_user WHERE email = '$email'";
-                $check_email = $this->db->select($e_query);
+                $checkEmail = "SELECT * FROM tbl_user WHERE email = '$email'";
+                $emailResult = $this->db->select($checkEmail);
 
-                if ($check_email) {
-                    $error = "This Email Is Already Exists";
-                    return $error;
-                    header("location:register.php");
-                }else {
-                    $insert_query = "INSERT INTO tbl_user (`user_name`, `email`, `phone`, `password`, `v_token`) VALUES ('$name', '$email', '$phone', '$password', '$v_token')";
-                    $insert_row = $this->db->insert($insert_query);
+                if ($emailResult) {
+                    $row = mysqli_fetch_assoc($emailResult);
+                    // print_r($row);
+                    if ($row['v_status'] == 0) {
 
-                    if ($insert_row) {
-                        sendemail_verify($name, $email, $v_token);
-                        $success = "Registration Successfull. Please check your inbox for verify email.";
+                        $name = $row['user_name'];
+                        $email = $row['email'];
+                        $v_token = $row['v_token'];
 
+                        resend_email_varify($name, $email, $v_token);
+                        $success = "Varification email link has been send in your email.";
                         return $success;
                     }else {
-                        $error = "Registration Failed";
+                        $error = "Email already varified. Please Log In.";
                         return $error;
                     }
+                }else {
+                    $error = "This Email Is Not Registered. Please Register First.";
+                    return $error;
                 }
             }
-
         }
     }
+
 ?>
