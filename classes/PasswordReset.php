@@ -10,7 +10,8 @@
     use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
 
-    class Resendemail{
+
+    class PasswordReset{
         private $db;
         private $format;
 
@@ -21,8 +22,9 @@
 
         }
 
-        public function resendEmail($email){
-            function resend_email_varify($name, $email, $v_token){
+        public function PasswordReset($email){
+
+            function send_password_reset($name, $email, $v_token){
                 $mail = new PHPMailer(true);
                 $mail->isSMTP();
                 $mail->SMTPAuth   = false;
@@ -38,12 +40,12 @@
                 $mail->addAddress($email);
 
                 $mail->isHTML(true);
-                $mail->Subject = "Email Varification";
+                $mail->Subject = "Password Varification";
 
                 $email_template = "
-                    <h2> You have register</h2>
-                    <h5>Verify your email address to login. Please click the link below</h5>
-                    <a href='http://localhost/pweb/admin/verify-email.php?token=$v_token'>Click Here</a>
+                    <h2> Reset Your Password</h2>
+                    <h5>Verify your email address to reset your password. Please click the link below</h5>
+                    <a href='http://localhost/pweb/admin/password-change.php?token=$v_token&email=$email'>Click Here</a>
                 ";
 
                 $mail->Body = $email_template;
@@ -52,37 +54,39 @@
             }
 
             $email = $this->format->validation($email);
-            $email = mysqli_real_escape_string($this->db->link, $email);
+            $v_token = md5(rand());
 
             if (empty($email)) {
-                $error = "Email fild must not be empty!";
+                $error = "Email Feild Must Not Be Empty!";
                 return $error;
             }else {
-                $checkEmail = "SELECT * FROM tbl_user WHERE email = '$email'";
-                $emailResult = $this->db->select($checkEmail);
+                $check_email = "SELECT * FROM tbl_user WHERE email = '$email'";
+                $email_result = $this->db->select($check_email);
 
-                if ($emailResult) {
-                    $row = mysqli_fetch_assoc($emailResult);
-                    // print_r($row);
-                    if ($row['v_status'] == 0) {
+                if ($email_result) {
+                    $row = mysqli_fetch_assoc($email_result);
+                    $name = $row['user_name'];
+                    $email = $row['email'];
+                    $query = "UPDATE tbl_user SET v_token = '$v_token' WHERE email = '$email' LIMIT 1";
 
-                        $name = $row['user_name'];
-                        $email = $row['email'];
-                        $v_token = $row['v_token'];
+                    $update_token = $this->db->update($query);
 
-                        resend_email_varify($name, $email, $v_token);
-                        $success = "Varification email link has been send in your email.";
+                    if ($update_token) {
+                        send_password_reset($name, $email, $v_token);
+                        $success = "Password reset email send in your email!";
                         return $success;
+
                     }else {
-                        $error = "Email already varified. Please Log In.";
+                        $error = "Something Wrong! Token Is Not Updated.";
                         return $error;
                     }
+
                 }else {
-                    $error = "This Email Is Not Registered. Please Register First.";
+                    $error = "Email Not Found!";
                     return $error;
                 }
             }
         }
-    }
 
+    }
 ?>

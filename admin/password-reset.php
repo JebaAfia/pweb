@@ -1,11 +1,11 @@
 <?php
-include_once '../classes/Resendemail.php';
-$resend_email = new Resendemail();
+include_once '../classes/PasswordReset.php';
+$password_reset = new PasswordReset();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = $_POST['email'];
         
-        $resend = $resend_email->resendEmail($email);
+        $reset = $password_reset->PasswordReset($email);
     }
 
 ?>
@@ -20,7 +20,7 @@ $resend_email = new Resendemail();
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
-    <title>Resend Email</title>
+    <title>Password Reset</title>
 </head>
 
 <body>
@@ -30,10 +30,10 @@ $resend_email = new Resendemail();
             <div class="col-md-6">
                 <span>
                     <?php
-                    if (isset($resend)) {
+                    if (isset($reset)) {
                     ?>
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <?= $resend?>
+                            <?= $reset?>
                             <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -43,7 +43,7 @@ $resend_email = new Resendemail();
                     ?>
                 </span>
                 <div class="card">
-                    <div class="card-header">Resend Email Form</div>
+                    <div class="card-header">Password Reset</div>
                     <div class="card-body">
                         <form action="" method="POST">
                             <div class="form-group">
@@ -51,8 +51,7 @@ $resend_email = new Resendemail();
                                 <input type="email" name="email" class="form-control">
                             </div>
 
-                            <button type="submit" class="btn btn-success">Resend Email</button>
-                            <a href="login.php" class="btn btn-warning">Login</a>
+                            <button type="submit" class="btn btn-info">Send Password Reset Link</button>
                         </form>
                     </div>
                 </div>

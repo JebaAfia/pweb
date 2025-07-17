@@ -1,11 +1,9 @@
 <?php
-include_once '../classes/Resendemail.php';
-$resend_email = new Resendemail();
+include_once '../classes/ChangePassword.php';
+$change_password = new ChangePassword();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $email = $_POST['email'];
-        
-        $resend = $resend_email->resendEmail($email);
+        $ChangeP = $change_password->ChangePassword($_POST);
     }
 
 ?>
@@ -20,7 +18,7 @@ $resend_email = new Resendemail();
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
-    <title>Resend Email</title>
+    <title>Password Change</title>
 </head>
 
 <body>
@@ -30,10 +28,10 @@ $resend_email = new Resendemail();
             <div class="col-md-6">
                 <span>
                     <?php
-                    if (isset($resend)) {
+                    if (isset($ChangeP)) {
                     ?>
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <?= $resend?>
+                            <?= $ChangeP?>
                             <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -43,16 +41,36 @@ $resend_email = new Resendemail();
                     ?>
                 </span>
                 <div class="card">
-                    <div class="card-header">Resend Email Form</div>
+                    <div class="card-header">Password Change</div>
                     <div class="card-body">
                         <form action="" method="POST">
+                            <input type="hidden" name="token" class="form-control" value="<?php 
+                                if (isset($_GET['token'])) {
+                                    echo $_GET['token'];
+                                }
+                            ?>">
                             <div class="form-group">
                                 <label>Email address</label>
-                                <input type="email" name="email" class="form-control">
+                                <input type="email" name="email" class="form-control" value="<?php 
+                                 if (isset($_GET['email'])) {
+                                    echo $_GET['email'];
+                                 }
+                                ?>">
                             </div>
 
-                            <button type="submit" class="btn btn-success">Resend Email</button>
-                            <a href="login.php" class="btn btn-warning">Login</a>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" name="new-password" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" name="confirm-password" class="form-control">
+                            </div>
+
+                            
+
+                            <button type="submit" class="btn btn-info w-100" >Change Password</button>
                         </form>
                     </div>
                 </div>

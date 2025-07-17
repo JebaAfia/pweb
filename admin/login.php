@@ -36,7 +36,7 @@ $admin_login = new AdminLogin();
                     ?>
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <?= $_SESSION['status']?>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -74,7 +74,7 @@ $admin_login = new AdminLogin();
 
                             <button type="submit" class="btn btn-success">Login</button>
                             <a href="register.php" class="btn btn-primary">Sign Up</a>
-                            <a href="#" class="float-right">Forget Your Password?</a>
+                            <a href="password-reset.php" class="float-right">Forget Your Password?</a>
                         </form>
                         <hr>
                         <h5>Did not recieve your varification email? <a href="resend-email.php">Resend</a></h5>
