@@ -16,7 +16,7 @@ include_once 'inc/slider.php';
             <div class="col-md-12 col-lg-8 main-content">
               <div class="row">
                 <div class="col-md-6">
-                  <a href="blog-single.html" class="blog-entry element-animate" data-animate-effect="fadeIn">
+                  <a href="blog-single.php" class="blog-entry element-animate" data-animate-effect="fadeIn">
                     <img src="images/img_5.jpg" alt="Image placeholder">
                     <div class="blog-content-body">
                       <div class="post-meta">

@@ -44,7 +44,7 @@
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
                                     <i class="uil-window-section"></i>
-                                    <span>category</span>
+                                    <span>Category</span>
                                 </a>
                                 <ul class="sub-menu" aria-expanded="true">
                                     <li>
@@ -54,6 +54,23 @@
                                         <a href="categorylist.php" class="has-arrow">Category List</a>
                                     </li>
                                 </ul>
+                                
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="uil-window-section"></i>
+                                    <span>Posts</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="true">
+                                    <li>
+                                        <a href="postadd.php" class="has-arrow">Add Post</a>
+                                    </li>
+                                    <li>
+                                        <a href="all_post.php" class="has-arrow">All Post</a>
+                                    </li>
+                                </ul>
+                                
                             </li>
                         </ul>
                     </div>

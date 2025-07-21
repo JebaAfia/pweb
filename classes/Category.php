@@ -104,4 +104,15 @@ class Category
             return $msg;
         }
     }
+    public function modelDataCategory()
+    {
+        $model_data = "SELECT * FROM tbl_category";
+        $model_result = $this->db->select($model_data);
+
+        if ($model_result) {
+            return $model_result;
+        } else {
+            return false;
+        }
+    }
 }
