@@ -37,6 +37,7 @@ $post = new Post();
                         <h4 class="card-header">Post Add Form</h4>
                         <div class="card-body">
                             <form action="" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="user_id" class="form-control" value="<?=Session::get('user_id')?>"/>
                                 <div class="mb-3">
                                     <label class="form-label">Post Title</label>
                                     <input type="text" name="post_title" class="form-control" placeholder="Type post title..." />

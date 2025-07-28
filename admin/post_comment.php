@@ -7,23 +7,26 @@ include_once '../helpers/Format.php';
 $post = new Post();
 $format = new Format();
 
+include_once '../classes/Comment.php';
+$comment = new Comment();
+
 $user_id = Session::get('user_id');
 $all_post = $post->AllPost($user_id);
 
 //active
 if (isset($_GET['active'])) {
     $active_id = $_GET['active'];
-    $active = $post->activePost($active_id);
+    $active = $comment->activePost($active_id);
 }
 //deactive
 if (isset($_GET['deactive'])) {
     $deactive_id = $_GET['deactive'];
-    $deactive = $post->deactivePost($deactive_id);
+    $deactive = $comment->deactivePost($deactive_id);
 }
 
-if (isset($_GET['deletePost'])) {
-    $id = base64_decode($_GET['deletePost']);
-    $deletePost = $post->DeletePost($id);
+if (isset($_GET['deleteComment'])) {
+    $id = base64_decode($_GET['deleteComment']);
+    $deleteComment = $comment->deleteComment($id);
 }
 ?>
 
@@ -67,10 +70,10 @@ if (!isset($_GET['id'])) {
                     </span>
                     <span>
                         <?php
-                        if (isset($deletePost)) {
+                        if (isset($deleteComment)) {
                         ?>
                             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                <?= $deletePost ?>
+                                <?= $deleteComment ?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -80,20 +83,17 @@ if (!isset($_GET['id'])) {
                         ?>
                     </span>
                     <div class="card">
-                        <h4 class="card-header">All Post</h4>
+                        <h4 class="card-header">All Comment</h4>
                         <div class="card-body">
                             <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>Serial No</th>
-                                        <th>Post Title</th>
-                                        <th>Category</th>
-                                        <th>Image One</th>
-                                        <th>Description One</th>
-                                        <th>Image Two</th>
-                                        <th>Description Two</th>
-                                        <th>Post Type</th>
-                                        <th>Tags</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Website</th>
+                                        <th>Comment</th>
+                                        <th>Admin Reply</th>
                                         <th>Action</th>
 
                                     </tr>
@@ -102,39 +102,31 @@ if (!isset($_GET['id'])) {
 
                                 <tbody>
                                     <?php
-                                    if ($all_post) {
+                                    $allComment = $comment->adminComment($user_id);
+                                    if ($allComment) {
                                         $i = 0;
-                                        while ($row = mysqli_fetch_assoc($all_post)) {
+                                        while ($row = mysqli_fetch_assoc($allComment)) {
                                             $i++;
                                     ?>
                                             <tr>
                                                 <td><?= $i ?></td>
-                                                <td><?= $row['post_title'] ?></td>
-                                                <td><?= $row['category_name'] ?></td>
-                                                <td><img src="<?= $row['image_one'] ?>" style="width: 70px;" alt=""></td>
-                                                <td><?= $format->textShorten($row['description_one'], 5) ?></td>
-                                                <td><img src="<?= $row['image_two'] ?>" style="width: 70px;" alt=""></td>
-                                                <td><?= $format->textShorten($row['description_two'], 5) ?></td>
-                                                <td><?php
-                                                    if ($row['post_type'] == 1) {
-                                                        echo 'Post';
-                                                    } else {
-                                                        echo 'Slider';
-                                                    }
-                                                    ?></td>
-                                                <td><?= $format->textShorten($row['tags'], 5) ?></td>
+                                                <td><?= $row['name'] ?></td>
+                                                <td><?= $row['email'] ?></td>
+                                                <td><?= $row['website'] ?></td>
+                                                <td><?= $row['message'] ?></td>
+                                                <td><?= $row['admin_reply'] ?></td>
                                                 <td>
-                                                    <a href="postEdit.php?editPost=<?=base64_encode($row['post_id'])?>" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
-                                                    <a href="?deletePost=<?=base64_encode($row['post_id'])?>" onclick="return confirm('Are You Sure To Delete?')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                                    <a href="comment-reply.php?replyComment=<?=base64_encode($row['comment_id'])?>" class="btn btn-sm btn-primary"><i class="fas fa-reply"></i></a>
+                                                    <a href="?deleteComment=<?=base64_encode($row['comment_id'])?>" onclick="return confirm('Are You Sure To Delete?')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                                                     <a href="" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#myModal-<?=$row['post_id']?>"><i class="fas fa-eye"></i></a>
                                                     <?php
                                                         if ($row['status'] == 0) {
                                                             ?>
-                                                            <a href="?deactive=<?=$row['post_id']?>" class="btn btn-sm btn-warning"><i class="fas fa-arrow-down"></i></a>
+                                                            <a href="?deactive=<?=$row['comment_id']?>" class="btn btn-sm btn-warning"><i class="fas fa-arrow-down"></i></a>
                                                             <?php
                                                         }else {
                                                             ?>
-                                                            <a href="?active=<?=$row['post_id']?>" class="btn btn-sm btn-success"><i class="fas fa-arrow-up"></i></a>
+                                                            <a href="?active=<?=$row['comment_id']?>" class="btn btn-sm btn-success"><i class="fas fa-arrow-up"></i></a>
                                                             <?php
                                                         }
                                                     ?>

@@ -32,6 +32,8 @@ include_once '../helpers/Format.php';
                     if ($row['v_status'] == 1) {
                         Session::set('login', true);
                         Session::set('user_name', $row['user_name']);
+                        Session::set('user_id', $row['user_id']);
+                        Session::set('user_image', $row['image']);
                         header('location:index.php');
                     }else {
                         $error = "Please Fisrt Varify Your Email!";

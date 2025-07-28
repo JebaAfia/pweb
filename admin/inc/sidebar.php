@@ -69,6 +69,25 @@
                                     <li>
                                         <a href="all_post.php" class="has-arrow">All Post</a>
                                     </li>
+                                    <li>
+                                        <a href="post_comment.php" class="has-arrow">Post Comment</a>
+                                    </li>
+                                </ul>
+                                
+                            </li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="uil-window-section"></i>
+                                    <span>Site Option</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="true">
+                                    <li>
+                                        <a href="social-link.php" class="has-arrow">Social Link</a>
+                                    </li>
+                                    <li>
+                                        <a href="site-logo.php" class="has-arrow">Site Logo</a>
+                                    </li>
                                 </ul>
                                 
                             </li>

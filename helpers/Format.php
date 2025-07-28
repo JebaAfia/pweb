@@ -1,6 +1,10 @@
 <?php
 
 class Format{
+    public function formatDate ($data)
+    {
+        return date ("M d, Y", strtotime($data));
+    }
     public function validation($data)
     {   
         $data = trim($data);
