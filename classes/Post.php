@@ -268,4 +268,11 @@ class Post
         $result = $this->db->select($popular_post);
         return $result;
     }
+
+    public function categoryNumber($id)
+    {
+        $category_query = "SELECT * FROM tbl_post WHERE tbl_post.category_id = '$id'";
+        $category_result = $this->db->select($category_query);
+        return $category_result;
+    }
 }

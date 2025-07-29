@@ -8,6 +8,9 @@ $site_option = new SiteOption();
 include_once 'classes/Post.php';
 $post = new Post();
 
+include_once 'classes/Category.php';
+$category = new Category();
+
 include_once 'helpers/Format.php';
 $format = new Format();
 ?>
@@ -89,11 +92,29 @@ $format = new Format();
   <div class="sidebar-box">
     <h3 class="heading">Categories</h3>
     <ul class="categories">
-      <li><a href="#">Food <span>(12)</span></a></li>
-      <li><a href="#">Travel <span>(22)</span></a></li>
-      <li><a href="#">Lifestyle <span>(37)</span></a></li>
-      <li><a href="#">Business <span>(42)</span></a></li>
-      <li><a href="#">Adventure <span>(14)</span></a></li>
+      <?php
+      $allCategory = $category->AllCategory();
+      if ($allCategory) {
+        while ($categoryRow = mysqli_fetch_assoc($allCategory)) {
+          ?>
+            <li>
+              <a href="#"><?=$categoryRow['category_name']?> 
+                <span>
+                  (<?php
+                    $categoryNumber = $post->categoryNumber($categoryRow['category_id']);
+                    if ($categoryNumber) {
+                      echo $num = mysqli_num_rows($categoryNumber);
+                    }else {
+                      echo 0;
+                    }
+                  ?>)
+                </span>
+              </a>
+            </li>
+          <?php
+        }
+      }
+      ?>
     </ul>
   </div>
   <!-- END sidebar-box -->
@@ -101,18 +122,16 @@ $format = new Format();
   <div class="sidebar-box">
     <h3 class="heading">Tags</h3>
     <ul class="tags">
-      <li><a href="#">Travel</a></li>
-      <li><a href="#">Adventure</a></li>
-      <li><a href="#">Food</a></li>
-      <li><a href="#">Lifestyle</a></li>
-      <li><a href="#">Business</a></li>
-      <li><a href="#">Freelancing</a></li>
-      <li><a href="#">Travel</a></li>
-      <li><a href="#">Adventure</a></li>
-      <li><a href="#">Food</a></li>
-      <li><a href="#">Lifestyle</a></li>
-      <li><a href="#">Business</a></li>
-      <li><a href="#">Freelancing</a></li>
+      <?php
+        $allTags = $post->showPopularPost();
+        if ($allTags) {
+          while ($tag = mysqli_fetch_assoc($allTags)) {
+            ?>
+              <li><a href="#"><?=$tag['tags']?></a></li>
+            <?php
+          }
+        }
+      ?>
     </ul>
   </div>
 </div>
