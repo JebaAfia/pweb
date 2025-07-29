@@ -1,6 +1,7 @@
 <?php
-include_once '../lib/Database.php';
-include_once '../helpers/Format.php';
+$filepath = realpath(dirname(__FILE__));
+include_once ($filepath .'/../lib/Database.php');
+include_once ($filepath .'/../helpers/Format.php');
 
 class User
 {
@@ -13,14 +14,24 @@ class User
         $this->format = new Format();
     }
 
-    public function userInfo($id){
+    public function userInfo($id)
+    {
         $user_query = "SELECT * FROM tbl_user WHERE user_id = '$id'";
+        $result = $this->db->select($user_query);
+        return $result;
+    }
+
+    //show frontend user info 
+    public function userBio()
+    {
+        $user_query = "SELECT * FROM tbl_user";
         $result = $this->db->select($user_query);
         return $result;
     }
 
     public function userUpdate($data, $file, $id){
         $user_name = $this->format->validation($data['user_name']);
+        $user_bio = $this->format->validation($data['user_bio']);
 
         $permited = array('jpg', 'jpeg', 'png', 'gif');
         $file_name = $file['image']['name'];
@@ -32,8 +43,8 @@ class User
         $unique_image = substr(md5(time()), 0, 10) . '.' . $file_extension;
         $upload_image = "upload/" . $unique_image;
 
-        if (empty($user_name)) {
-            $msg = "User Name Feild Must Not Be Empty";
+        if (empty($user_name || empty($user_bio))) {
+            $msg = "User Name & User Bio Feild Must Not Be Empty";
             return $msg;
         }else {
             if (!empty($file_name)) {
@@ -49,7 +60,7 @@ class User
                 } 
                 move_uploaded_file($file_temp, $upload_image);
 
-                $query = "UPDATE tbl_user SET user_name = '$user_name', image = '$upload_image' WHERE user_id = '$id'";
+                $query = "UPDATE tbl_user SET user_name = '$user_name', image = '$upload_image', user_bio = '$user_bio'  WHERE user_id = '$id'";
                 $result = $this->db->insert($query);
                 if ($result) {
                     $msg = "User Profile Updated Successfully!";
@@ -59,7 +70,7 @@ class User
                     return $msg;
                 }
             }else {
-                $query = "UPDATE tbl_user SET user_name = '$user_name' WHERE user_id = '$id'";
+                $query = "UPDATE tbl_user SET user_name = '$user_name', user_bio = '$user_bio' WHERE user_id = '$id'";
                 $result = $this->db->insert($query);
                 if ($result) {
                     $msg = "User Profile Updated Successfully!";

@@ -49,7 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <div class="mb-3">
                                             <label class="form-label">User Photo</label>
                                             <input type="file" name="image" class="form-control" />
-                                            <img src="<?=$row['image']?>" alt="" class="img-thumbnail">
+                                            <img src="<?=$row['image']?>" style="width: 200px;" alt="" class="img-thumbnail">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">User Bio</label>
+                                            <textarea name="user_bio" id="" class="form-control"></textarea>
+                                            
                                         </div>
                                         <div>
                                             <div>

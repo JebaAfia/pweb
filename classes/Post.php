@@ -261,4 +261,11 @@ class Post
         $single_result = $this->db->select($single_query);
         return $single_result;
     }
+
+    public function showPopularPost()
+    {
+        $popular_post = "SELECT * FROM tbl_post ORDER BY post_id DESC LIMIT 3";
+        $result = $this->db->select($popular_post);
+        return $result;
+    }
 }
