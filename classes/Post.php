@@ -275,4 +275,16 @@ class Post
         $category_result = $this->db->select($category_query);
         return $category_result;
     }
+
+    //slider post
+    public function sliderPost()
+    {
+        $slider_query = "SELECT tbl_post.*, tbl_category.category_name, tbl_user.image, tbl_user.user_name FROM tbl_post 
+        INNER JOIN tbl_category ON tbl_post.category_id = tbl_category.category_id 
+        INNER JOIN tbl_user ON tbl_post.user_id = tbl_user.user_id 
+        WHERE post_type = 2 AND status = 1";
+
+        $slider_result = $this->db->select($slider_query);
+        return $slider_result;
+    }
 }

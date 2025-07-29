@@ -1,64 +1,43 @@
+<?php
+include_once 'classes/Post.php';
+$post = new Post();
+
+include_once 'helpers/Format.php';
+$format = new Format();
+?>
 <section class="site-section pt-5 pb-5">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
 
-              <div class="owl-carousel owl-theme home-slider">
-                <div>
-                  <a href="blog-single.html" class="a-block d-flex align-items-center height-lg" style="background-image: url('images/img_1.jpg'); ">
-                    <div class="text half-to-full">
-                      <span class="category mb-5">Food</span>
-                      <div class="post-meta">
-                        
-                        <span class="author mr-2"><img src="images/person_1.jpg" alt="Colorlib"> Colorlib</span>&bullet;
-                        <span class="mr-2">March 15, 2018 </span> &bullet;
-                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                        
-                      </div>
-                      <h3>How to Find the Video Games of Your Youth</h3>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
+        <div class="owl-carousel owl-theme home-slider">
+          <?php
+          $slider_post = $post->sliderPost();
+          if ($slider_post) {
+            while ($slider_post_row = mysqli_fetch_assoc($slider_post)) {
+          ?>
+              <div>
+                <a href="blog-single.php?singleId=<?=base64_encode($slider_post_row['post_id'])?>" class="a-block d-flex align-items-center height-lg" style="background-image: url(admin/<?=$slider_post_row['image_one']?>); ">
+                  <div class="text half-to-full">
+                    <span class="category mb-5"><?=$slider_post_row['category_name']?></span>
+                    <div class="post-meta">
+
+                      <span class="author mr-2"><img src="admin/<?=$slider_post_row['image']?>" alt="user_name"><?=$slider_post_row['user_name']?></span>&bullet;
+                      <span class="mr-2"><?=$format->formatDate($slider_post_row['created_at'])?></span> &bullet;
+
                     </div>
-                  </a>
-                </div>
-                <div>
-                  <a href="blog-single.html" class="a-block d-flex align-items-center height-lg" style="background-image: url('images/img_2.jpg'); ">
-                    <div class="text half-to-full">
-                      <span class="category mb-5">Travel</span>
-                      <div class="post-meta">
-                        
-                        <span class="author mr-2"><img src="images/person_1.jpg" alt="Colorlib"> Colorlib</span>&bullet;
-                        <span class="mr-2">March 15, 2018 </span> &bullet;
-                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                        
-                      </div>
-                      <h3>How to Find the Video Games of Your Youth</h3>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
-                    </div>
-                  </a>
-                </div>
-                <div>
-                  <a href="blog-single.html" class="a-block d-flex align-items-center height-lg" style="background-image: url('images/img_3.jpg'); ">
-                    <div class="text half-to-full">
-                      <span class="category mb-5">Sports</span>
-                      <div class="post-meta">
-                        
-                        <span class="author mr-2"><img src="images/person_1.jpg" alt="Colorlib"> Colorlib</span>&bullet;
-                        <span class="mr-2">March 15, 2018 </span> &bullet;
-                        <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-                        
-                      </div>
-                      <h3>How to Find the Video Games of Your Youth</h3>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem nobis, ut dicta eaque ipsa laudantium!</p>
-                    </div>
-                  </a>
-                </div>
+                    <h3><?=$slider_post_row['post_title']?></h3>
+                    <p><?=$format->textShorten($slider_post_row['description_one'], 100)?></p>
+                  </div>
+                </a>
               </div>
-              
-            </div>
-          </div>
-          
+          <?php
+            }
+          }
+          ?>
         </div>
-
-
-      </section>
-      <!-- END section -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- END section -->
