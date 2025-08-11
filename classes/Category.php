@@ -116,4 +116,12 @@ class Category
             return false;
         }
     }
+
+    //category name for select categoiry
+    public function categoryName($id)
+    {
+        $category_id = "SELECT * FROM tbl_category WHERE category_id = '$id'";
+        $result = $this->db->select($category_id);
+        return $result;
+    }
 }

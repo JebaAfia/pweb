@@ -56,9 +56,9 @@ $site_option = new SiteOption();
 
             <div class="col-3 search-top">
               <!-- <a href="#"><span class="fa fa-search"></span></a> -->
-              <form action="#" class="search-top-form">
+              <form action="search.php" method="get" class="search-top-form">
                 <span class="icon fa fa-search"></span>
-                <input type="text" id="s" placeholder="Type keyword to search...">
+                <input type="text" name="search" id="s" placeholder="Type keyword to search...">
               </form>
             </div>
           </div>
@@ -102,7 +102,7 @@ $site_option = new SiteOption();
                   if ($all_category) {
                     while ($category_row = mysqli_fetch_assoc($all_category)) {
                   ?>
-                      <a class="dropdown-item" href="category.php"><?= $category_row['category_name'] ?></a>
+                      <a class="dropdown-item" href="category.php?categoryID=<?=base64_encode($category_row['category_id'])?>"><?= $category_row['category_name'] ?></a>
                   <?php
                     }
                   }

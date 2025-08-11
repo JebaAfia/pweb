@@ -61,11 +61,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               if ($allcomment) {
                 $num_rows = mysqli_num_rows($allcomment);
               ?>
-              <h3 class="mb-5"><?= $num_rows ?> Comments</h3>
-              <?php
+                <h3 class="mb-5"><?= $num_rows ?> Comments</h3>
+                <?php
                 while ($comment_row = mysqli_fetch_assoc($allcomment)) {
-                  
-              ?>
+
+                ?>
                   <ul class="comment-list">
                     <li class="comment">
                       <div class="vcard">
@@ -83,10 +83,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <ul class="children">
                           <li class="comment">
                             <div class="vcard">
-                              <img src="admin/<?=$comment_row['image']?>" alt="Image placeholder">
+                              <img src="admin/<?= $comment_row['image'] ?>" alt="Image placeholder">
                             </div>
                             <div class="comment-body">
-                              <h3><?=$comment_row['user_name']?></h3>
+                              <h3><?= $comment_row['user_name'] ?></h3>
                               <div class="meta"><?= $comment_row['update_date'] ?></div>
                               <p><?= $comment_row['admin_reply'] ?></p>
                               <p><a href="#" class="reply rounded">Reply</a></p>
@@ -152,19 +152,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
 
           </div>
-      <?php
-        }
-      }
-      ?>
 
 
 
-      <!-- END main-content -->
-      <!-- START sidebar -->
-      <?php
-      include_once 'inc/sidebar.php';
-      ?>
-      <!-- END sidebar -->
+
+          <!-- END main-content -->
+          <!-- START sidebar -->
+          <?php
+          include_once 'inc/sidebar.php';
+          ?>
+          <!-- END sidebar -->
 
     </div>
   </div>
@@ -178,45 +175,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6 col-lg-4">
-        <a href="#" class="a-block sm d-flex align-items-center height-md" style="background-image: url('images/img_2.jpg'); ">
-          <div class="text">
-            <div class="post-meta">
-              <span class="category">Lifestyle</span>
-              <span class="mr-2">March 15, 2018 </span> &bullet;
-              <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-            </div>
-            <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
+      <?php
+          $related_post = $post->relatedPost($row['category_id']);
+          if ($related_post) {
+            while ($related_post_row = mysqli_fetch_assoc($related_post)) {
+      ?>
+          <div class="col-md-6 col-lg-4">
+            <a href="blog-single.php?singleId=<?=base64_encode($related_post_row['post_id'])?>" class="a-block sm d-flex align-items-center height-md" style="background-image: url(admin/<?=$related_post_row['image_one']?>); ">
+              <div class="text">
+                <div class="post-meta">
+                  <span class="category"><?=$related_post_row['category_name']?></span>
+                  <span class="mr-2"><?=$format->formatDate($related_post_row['created_at'])?></span> &bullet;
+                  <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
+                </div>
+                <h3><?=$related_post_row['post_title']?></h3>
+              </div>
+            </a>
           </div>
-        </a>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <a href="#" class="a-block sm d-flex align-items-center height-md" style="background-image: url('images/img_3.jpg'); ">
-          <div class="text">
-            <div class="post-meta">
-              <span class="category">Travel</span>
-              <span class="mr-2">March 15, 2018 </span> &bullet;
-              <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-            </div>
-            <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <a href="#" class="a-block sm d-flex align-items-center height-md" style="background-image: url('images/img_4.jpg'); ">
-          <div class="text">
-            <div class="post-meta">
-              <span class="category">Food</span>
-              <span class="mr-2">March 15, 2018 </span> &bullet;
-              <span class="ml-2"><span class="fa fa-comments"></span> 3</span>
-            </div>
-            <h3>There’s a Cool New Way for Men to Wear Socks and Sandals</h3>
-          </div>
-        </a>
-      </div>
+      <?php
+            }
+          }
+      ?>
     </div>
   </div>
 </section>
+<?php
+        }
+      }
+?>
 <!-- END section -->
 
 <?php

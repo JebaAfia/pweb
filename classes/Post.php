@@ -243,10 +243,10 @@ class Post
     }
 
     //frontend Functions
-    public function latestPost(){
+    public function latestPost($offset, $limit){
         $post_query = "SELECT tbl_post.*, tbl_user.user_name, tbl_user.image FROM tbl_post 
         INNER JOIN tbl_user ON tbl_post.user_id = tbl_user.user_id 
-        WHERE tbl_post.status = '1' ORDER BY tbl_post.post_id DESC";
+        WHERE tbl_post.status = '1' ORDER BY tbl_post.post_id DESC LIMIT $offset, $limit";
 
         $post_result = $this->db->select($post_query);
         return $post_result;
@@ -286,5 +286,51 @@ class Post
 
         $slider_result = $this->db->select($slider_query);
         return $slider_result;
+    }
+
+    //search post
+    public function searchPost($id)
+    {
+        $search_query = "SELECT tbl_post.*, tbl_user.image, tbl_user.user_name FROM tbl_post 
+        INNER JOIN tbl_user ON tbl_post.user_id = tbl_user.user_id WHERE tbl_post.post_title LIKE '%$id%'";
+        $search_result = $this->db->select($search_query);
+        return $search_result;
+    }
+
+    //pagination
+    public function numberOfPost()
+    {
+        $post_query = "SELECT * FROM tbl_post";
+        $post = $this->db->select($post_query);
+        return $post;
+    }
+
+    //blog single page. Related post
+    public function relatedPost($id)
+    {
+        $related_post_query = "SELECT tbl_post.*, tbl_category.category_name FROM tbl_post
+        INNER JOIN tbl_category ON tbl_post.category_id = tbl_category.category_id WHERE tbl_post.category_id ='$id' ORDER BY tbl_post.post_id DESC LIMIT 3";
+        $related_post_result = $this->db->select($related_post_query);
+        return $related_post_result;
+    }
+
+    //Category Related Post
+    public function categoryPost($id, $offset, $limit)
+    {
+        $post_query = "SELECT tbl_post.*, tbl_user.user_name, tbl_user.image, tbl_category.category_name FROM tbl_post 
+        INNER JOIN tbl_user ON tbl_post.user_id = tbl_user.user_id 
+        INNER JOIN tbl_category ON tbl_post.category_id = tbl_category.category_id
+        WHERE tbl_post.status = '1' AND tbl_post.category_id = '$id' ORDER BY tbl_post.post_id DESC LIMIT $offset, $limit";
+
+        $category_result = $this->db->select($post_query);
+        return $category_result;
+    }
+
+    //show category pagination post
+    public function numberOfCategoryPost($categoryID)
+    {
+        $select_category_query = "SELECT * FROM tbl_post WHERE tbl_post.category_id = '$categoryID'";
+        $result = $this->db->select($select_category_query);
+        return $result;
     }
 }
